@@ -116,6 +116,22 @@ em { font-style: normal; color: var(--lime-700); }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 .menu-open .burger { border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.08); }
 .menu-open .burger span { background: var(--lime); }
+@media (max-width: 959px) {
+  .burger {
+    width: 46px; height: 46px; border: 1px solid #111; border-radius: 13px;
+    background: transparent; box-shadow: none; gap: 5px;
+    transition: background .25s, border-color .25s, transform .25s;
+  }
+  .burger span { width: 19px; height: 1.5px; background: #111; }
+  .burger:hover, .burger:active { background: transparent; box-shadow: none; }
+  .burger:active { transform: scale(.97); }
+  .burger[aria-expanded="true"], .menu-open .burger {
+    background: var(--lime); border-color: var(--lime);
+    box-shadow: 0 0 0 3px rgba(181,206,46,.24);
+  }
+  .burger[aria-expanded="true"] span, .menu-open .burger span { background: var(--forest); }
+}
+@media (prefers-reduced-motion: reduce) { .burger { transition: none; } }
 
 .nav {
   position: fixed; inset: 0; display: flex; flex-direction: column;
@@ -238,7 +254,7 @@ em { font-style: normal; color: var(--lime-700); }
   position: absolute;
   z-index: 0;
   inset: 0;
-  background: url("../images/banniere/page-home/hero-nature.jpg") center / cover no-repeat;
+  background: url("../images/banniere/page-home/hero-nature-optimized.jpg") center / cover no-repeat;
   animation: hero-zoom 28s ease-in-out infinite alternate;
 }
 .hero__bg { z-index: 1; background: linear-gradient(110deg, rgba(23,48,31,.42), rgba(23,48,31,.18) 70%, rgba(23,48,31,.12)); }
@@ -381,6 +397,27 @@ em { font-style: normal; color: var(--lime-700); }
 .product-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
 .product-card__media img.product-image--dolactiv, .product-card__media img.product-image--isoline, .product-card__media img.product-image--mkm { min-width: 0; min-height: 0; object-fit: contain; }
 .product-card--dolactiv .product-card__media, .product-card--isoline .product-card__media, .product-card--mkm .product-card__media { background: #fff; }
+@media (max-width: 639px) {
+  .products .product-filter-bar { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 1.25rem; }
+  .products .filters { display: flex; flex-wrap: nowrap; width: 100%; margin: 0; padding: 0; gap: 6px; overflow: visible; }
+  .products .filter { flex: 1 1 0; min-width: 0; min-height: 40px; justify-content: center; padding: .62rem .45rem; font-size: 0; line-height: 1; white-space: nowrap; }
+  .products .filter::before { content: attr(data-mobile-label); font-size: .78rem; }
+  .products .filter__count { display: none; }
+  .products .needs-filter { width: 100%; margin: 0; justify-self: stretch; }
+  .products .needs-filter__trigger { width: 100%; }
+  .products .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+  .products .product-card { border: 1px solid rgba(23,48,31,.06); border-radius: 20px; overflow: hidden; background: #fff; box-shadow: 0 8px 22px rgba(23,48,31,.07); }
+  .products .product-card__media { aspect-ratio: 1; border-radius: 0; background: #f3f4f2; }
+  .products .product-card__media img { object-fit: cover; padding: 0; }
+  .products .product-card__media .tag { display: none; }
+  .products .product-card__body { padding: clamp(10px, 3vw, 13px); }
+  .products .product-card__cat { font-size: clamp(.5rem, 2.2vw, .62rem); line-height: 1.4; letter-spacing: .04em; }
+  .products .product-card h3 { font-size: clamp(.95rem, 4vw, 1.1rem); line-height: 1.2; margin: .3rem 0 .4rem; }
+  .products .product-card p { font-size: clamp(.7rem, 2.8vw, .78rem); line-height: 1.45; margin-bottom: .75rem; }
+  .products .product-card__foot { padding-top: .7rem; gap: .4rem; border-top: 1px dashed var(--line); align-items: center; flex-wrap: wrap; }
+  .products .product-card__formats { font-size: clamp(.62rem, 2.5vw, .7rem); }
+  .products .product-card__more { font-size: clamp(.72rem, 2.8vw, .8rem); }
+}
 .product-card:hover .product-card__media svg, .product-card:hover .product-card__media img { transform: scale(1.06) rotate(-2deg); }
 .tag { position: absolute; top: 12px; left: 12px; font-size: .72rem; font-weight: 600; padding: .3em .75em; border-radius: 999px; background: rgba(255,255,255,.9); color: var(--forest); border: 1px solid rgba(0,0,0,.05); }
 .tag--new { left: auto; right: 12px; background: var(--forest); color: var(--lime); }

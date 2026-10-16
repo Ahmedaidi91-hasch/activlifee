@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/images/banniere/page-home/hero-nature-optimized.jpg" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
 
   <script type="application/ld+json">
@@ -208,10 +209,10 @@
 
         <div class="product-filter-bar reveal">
           <div class="filters" role="tablist" aria-label="Filtrer les produits par catégorie">
-            <button class="filter is-active" role="tab" aria-selected="true" data-filter="all">Tous <span class="filter__count"></span></button>
-            <button class="filter" role="tab" aria-selected="false" data-filter="complement">Compléments alimentaires <span class="filter__count"></span></button>
-            <button class="filter" role="tab" aria-selected="false" data-filter="dermo">Dermo-cosmétique <span class="filter__count"></span></button>
-            <button class="filter" role="tab" aria-selected="false" data-filter="aroma">Aromathérapie <span class="filter__count"></span></button>
+            <button class="filter is-active" role="tab" aria-selected="true" aria-label="Tous" data-filter="all" data-mobile-label="Tous">Tous <span class="filter__count"></span></button>
+            <button class="filter" role="tab" aria-selected="false" aria-label="Compléments alimentaires" data-filter="complement" data-mobile-label="Compléments">Compléments alimentaires <span class="filter__count"></span></button>
+            <button class="filter" role="tab" aria-selected="false" aria-label="Dermo-cosmétique" data-filter="dermo" data-mobile-label="Dermo">Dermo-cosmétique <span class="filter__count"></span></button>
+            <button class="filter" role="tab" aria-selected="false" aria-label="Aromathérapie" data-filter="aroma" data-mobile-label="Aroma">Aromathérapie <span class="filter__count"></span></button>
           </div>
           <div class="needs-filter" id="needsFilter">
             <button class="needs-filter__trigger" id="needsFilterTrigger" type="button" aria-expanded="false" aria-controls="needsFilterPanel">
