@@ -32,8 +32,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); -webkit-text-size-adjust: 100%; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; scroll-snap-type: y mandatory; scroll-padding-top: calc(var(--header-h) + 12px); -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; scroll-snap-type: none; } }
 
 body {
   margin: 0;
@@ -96,9 +96,9 @@ em { font-style: normal; color: var(--lime-700); }
 /* ---------- Header ---------- */
 .header {
   position: fixed; inset: 0 0 auto; z-index: 100; height: var(--header-h);
-  transition: background .3s, box-shadow .3s, backdrop-filter .3s;
+  transition: background .7s var(--ease), box-shadow .7s var(--ease), backdrop-filter .7s var(--ease);
 }
-.header.is-scrolled { background: rgba(251, 252, 247, .86); backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px); box-shadow: 0 1px 0 var(--line); }
+.header.is-scrolled { background: rgba(251, 252, 247, .74); backdrop-filter: saturate(1.35) blur(12px); -webkit-backdrop-filter: saturate(1.35) blur(12px); box-shadow: 0 1px 0 rgba(23,48,31,.06); }
 /* backdrop-filter crée un bloc conteneur : à retirer quand le menu plein écran est ouvert */
 .menu-open .header { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--forest); }
 .header__inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -226,7 +226,8 @@ em { font-style: normal; color: var(--lime-700); }
 }
 
 .hero {
-  min-height: min(92vh, 900px);
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   background: #748345;
@@ -281,6 +282,7 @@ em { font-style: normal; color: var(--lime-700); }
 
 /* ---------- Sections ---------- */
 .section { padding: 72px 0; }
+.hero, main > .section { scroll-snap-align: start; }
 @media (min-width: 960px) { .section { padding: 110px 0; } }
 .section__title { font-size: clamp(1.9rem, 6vw, 3rem); font-weight: 500; letter-spacing: -.015em; }
 .section__head { max-width: 680px; margin-bottom: 2.4rem; }
@@ -524,7 +526,7 @@ em { font-style: normal; color: var(--lime-700); }
 .form-status.is-ok { color: var(--lime-700); font-weight: 500; }
 
 /* ---------- Footer ---------- */
-.footer { background: #0F2216; color: rgba(255,255,255,.65); padding: 64px 0 24px; font-size: .92rem; }
+.footer { scroll-snap-align: end; background: #0F2216; color: rgba(255,255,255,.65); padding: 64px 0 24px; font-size: .92rem; }
 .footer__grid { display: grid; gap: 32px; grid-template-columns: 1fr 1fr; }
 .footer__brand { grid-column: 1 / -1; }
 .footer__brand p { margin-top: 1rem; max-width: 30em; }
