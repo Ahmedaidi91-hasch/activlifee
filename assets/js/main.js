@@ -23,13 +23,12 @@
       <button class="product-card__hit" data-open="${p.id}" aria-label="Voir la fiche ${p.name}"></button>
       <div class="product-card__media">
         ${p.isNew ? `<span class="tag tag--new">Nouveau</span>` : ""}
-        <span class="tag">${p.badge}</span>
         ${packVisual(p, "card")}
       </div>
       <div class="product-card__body">
-        <span class="product-card__cat">${CATEGORIES[p.cat]}</span>
+        <span class="product-card__cat">${p.category}</span>
         <h3>${p.name}</h3>
-        <p>${p.tagline}</p>
+        <p>${p.type}</p>
         <div class="product-card__foot">
           <span class="product-card__formats">${p.formats.join(" · ")}</span>
           <span class="product-card__more" aria-hidden="true">Fiche
@@ -173,24 +172,26 @@
       <div class="pdp pdp--${p.id}" style="--tint:${p.tint}">
         <div class="pdp__media">${packVisual(p, "modal")}</div>
         <div class="pdp__info">
-          <span class="product-card__cat">${CATEGORIES[p.cat]}</span>
+          <span class="product-card__cat">${p.category}</span>
           <h2 id="modalTitle">${p.name}</h2>
-          <p class="pdp__tagline">${p.tagline}</p>
+          <p class="pdp__tagline">${p.badge}</p>
           <p>${p.description}</p>
-          <div class="pdp__chips">${p.formats.map(f => `<span class="chip">${f}</span>`).join("")}</div>
+          <p><strong>Tag besoin :</strong> ${p.needLabel}</p>
+          <p><strong>Type :</strong> ${p.type}</p>
+          ${p.formats.length ? `<div class="pdp__chips">${p.formats.map(f => `<span class="chip">${f}</span>`).join("")}</div>` : ""}
 
-          <h3>Bénéfices</h3>
+          <h3>Propriétés et bénéfices</h3>
           ${list(p.benefits)}
 
-          ${p.actifs ? `<h3>Actifs clés</h3><div class="pdp__chips">${p.actifs.map(a => `<span class="chip chip--soft">${a}</span>`).join("")}</div>` : ""}
+          <h3>Composition / actifs</h3>
+          <p>${p.composition}</p>
 
           <h3>Mode d’utilisation</h3>
           ${list(p.usage, "usage-list")}
 
-          <div class="pdp__warn">
-            <h3>Précautions</h3>
-            ${list(p.precautions, "warn-list")}
-          </div>
+          ${p.dosage ? `<h3>Posologie</h3>${list(p.dosage, "usage-list")}` : ""}
+
+          ${p.precautions.length ? `<div class="pdp__warn"><h3>Précautions</h3>${list(p.precautions, "warn-list")}</div>` : ""}
 
           <a href="#contact" class="btn btn--primary btn--block" data-ask="${p.id}">Demander des informations</a>
           <nav class="pdp__navigation" aria-label="Naviguer entre les produits">
