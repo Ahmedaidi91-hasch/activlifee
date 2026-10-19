@@ -161,20 +161,22 @@
   const modal = $("#modal");
   const modalBody = $("#modalBody");
   let lastFocus = null;
+  let touchStart = null;
 
   const list = (items, cls = "check-list") => `<ul class="${cls}">${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
   let activeProductIndex = 0;
 
-  function renderProduct(index, focusNavigation) {
+  function renderProduct(index, focusNavigation, swipeDirection) {
     activeProductIndex = (index + PRODUCTS.length) % PRODUCTS.length;
     const p = PRODUCTS[activeProductIndex];
     modalBody.innerHTML = `
-      <div class="pdp pdp--${p.id}" style="--tint:${p.tint}">
+      <div class="pdp pdp--${p.id}${swipeDirection && !reduceMotion ? ` pdp--swipe-${swipeDirection}` : ""}" style="--tint:${p.tint}">
         <div class="pdp__media">${packVisual(p, "modal")}</div>
         <div class="pdp__info">
           <span class="product-card__cat">${p.category}</span>
           <h2 id="modalTitle">${p.name}</h2>
           <p class="pdp__tagline">${p.badge}</p>
+          <h3>À propos du produit</h3>
           <p>${p.description}</p>
           <p><strong>Tag besoin :</strong> ${p.needLabel}</p>
           <p><strong>Type :</strong> ${p.type}</p>
@@ -245,6 +247,29 @@
       closeModal();
     }
   });
+
+  modalBody.addEventListener("touchstart", e => {
+    if (e.touches.length !== 1) {
+      touchStart = null;
+      return;
+    }
+    touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }, { passive: true });
+
+  modalBody.addEventListener("touchend", e => {
+    if (!touchStart || e.changedTouches.length !== 1) return;
+    const deltaX = e.changedTouches[0].clientX - touchStart.x;
+    const deltaY = e.changedTouches[0].clientY - touchStart.y;
+    touchStart = null;
+
+    if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return;
+    const direction = deltaX < 0 ? "next" : "previous";
+    renderProduct(activeProductIndex + (direction === "next" ? 1 : -1), null, direction);
+  }, { passive: true });
+
+  modalBody.addEventListener("touchcancel", () => {
+    touchStart = null;
+  }, { passive: true });
 
   document.addEventListener("keydown", e => {
     if (modal.hidden) return;
@@ -454,12 +479,29 @@
       status.className = "form-status is-error";
       return;
     }
-    const d = Object.fromEntries(new FormData(form));
-    const prod = d.product ? byId[d.product].name : "Question générale";
-    const subject = `[Site web] ${d.profile} — ${prod}`;
-    const body = `Nom : ${d.name}\nE-mail : ${d.email}\nTéléphone : ${d.phone || "-"}\nProfil : ${d.profile}\nProduit : ${prod}\n\n${d.message}`;
+    const formData = new FormData(form);
+    const productId = formData.get("product");
+    const product = productId ? byId[productId] : null;
+    if (productId && !product) {
+      status.textContent = "Le produit sélectionné n’est pas valide. Merci de le choisir à nouveau.";
+      status.className = "form-status is-error";
+      return;
+    }
+
+    const profile = profileSelect.selectedOptions[0].textContent;
+    const prod = product ? product.name : "Question générale";
+    const subject = `[Site web] ${profile} — ${prod}`;
+    const body = [
+      `Nom : ${formData.get("name")}`,
+      `E-mail : ${formData.get("email")}`,
+      `Téléphone : ${formData.get("phone") || "-"}`,
+      `Profil : ${profile}`,
+      `Produit : ${prod}`,
+      "",
+      formData.get("message")
+    ].join("\n");
     window.location.href = `mailto:contact@activlife-labs.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    status.textContent = "Votre messagerie va s’ouvrir pour finaliser l’envoi. Merci !";
+    status.textContent = "Votre messagerie va s’ouvrir avec les options choisies et le message saisi. Vérifiez puis envoyez l’e-mail.";
     status.className = "form-status is-ok";
   });
   $$("input, textarea", form).forEach(f =>
